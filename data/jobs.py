@@ -22,3 +22,10 @@ class Jobs(SqlAlchemyBase):
     is_finished = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
 
     user = orm.relation('User')
+
+    def __repr__(self):
+        return f"Работа: {self.job}\n" \
+               f"Длинна работы: {self.work_size}\n" \
+               f"Коллабораторы: {self.collaborators}\n" \
+               f"Начало работы: {self.start_date}\n" \
+               f"Конец работы: {self.end_date}"

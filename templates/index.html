@@ -2,7 +2,10 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<h1>Список работ</h1>
-<p>{{ current_user.jobs[0] }}</p>
+<div style="box-shadow: 0 0 10px rgba(0,0,0,0.5); padding: 10px">
+    <h1>Список работ</h1>
+    <p>{{ current_user.jobs[0] }}</p>
+    <a href="/jobs" class="btn btn-secondary">Добавить работу</a>
+</div>
 {% endif %}
 {% endblock %}
