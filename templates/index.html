@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<h1>Список работ</h1>
+<p>{{ current_user.jobs[0] }}</p>
+{% endif %}
+{% endblock %}
