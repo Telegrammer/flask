@@ -1,4 +1,4 @@
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, login_required, logout_user
 from flask import Flask, render_template, redirect
 from forms.user import RegisterForm
 from forms.login import LoginForm
@@ -14,6 +14,11 @@ login_manager.init_app(app)
 def main():
     db_session.global_init(f"db/mars_db.sqlite")
     app.run()
+
+
+@app.route('/')
+def index():
+    return render_template('base.html', title="Главная страница")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -45,7 +50,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -64,6 +69,13 @@ def login():
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 if __name__ == '__main__':
