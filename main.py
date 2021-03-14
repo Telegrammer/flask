@@ -20,10 +20,13 @@ def main():
 
 @app.route('/')
 def index():
-    if not current_user.jobs:
+    try:
+        if not current_user.jobs:
+            job = 0
+        else:
+            job = current_user.jobs[0]
+    except AttributeError:
         job = 0
-    else:
-        job = current_user.jobs[0]
     return render_template('index.html', title="Главная страница", job=job)
 
 
