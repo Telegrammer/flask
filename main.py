@@ -20,7 +20,11 @@ def main():
 
 @app.route('/')
 def index():
-    return render_template('index.html', title="Главная страница")
+    if not current_user.jobs:
+        job = 0
+    else:
+        job = current_user.jobs[0]
+    return render_template('index.html', title="Главная страница", job=job)
 
 
 @app.route('/register', methods=['GET', 'POST'])
