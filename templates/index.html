@@ -16,6 +16,16 @@
         {% else %}
         <p style="font-weight:700">The action is not finished</p>
         {% endif %}
+        {% if current_user.is_authenticated and current_user == job.user %}
+        <div>
+            <a href="/jobs_edit/{{ job.id }}" class="btn btn-warning">
+                Edit action
+            </a>
+            <a href="/jobs_delete/{{ job.id }}" class="btn btn-danger">
+                Delete action
+            </a>
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

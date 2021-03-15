@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 
 class JobsForm(FlaskForm):
-    team_leader = IntegerField('Team leader', validators=[DataRequired()])
+    team_leader = IntegerField('Team leader id', validators=[DataRequired()])
     jobs = StringField("Jobs")
     work_size = IntegerField("Work size")
     collaborators = StringField("Collaborators")
