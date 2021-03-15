@@ -21,13 +21,16 @@ def main():
 @app.route('/')
 def index():
     try:
-        if not current_user.jobs:
-            job = 0
-        else:
-            job = current_user.jobs[0]
+        works = current_user.jobs
+        db_sess = db_session.create_session()
+        team_leaders = [(" ").join(element) for element
+                        in db_sess.query(User.surname,
+                                         User.name).filter(User.id == Jobs.team_leader).all()]
+        print(team_leaders)
     except AttributeError:
-        job = 0
-    return render_template('index.html', title="Главная страница", job=job)
+        works = []
+        team_leaders = []
+    return render_template('index.html', title="Главная страница", jobs=works, team_leaders=team_leaders)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -85,8 +88,6 @@ def jobs():
         jobs.job = form.jobs.data
         jobs.work_size = form.work_size.data
         jobs.collaborators = form.collaborators.data
-        jobs.start_date = form.start_date.data
-        jobs.end_date = form.end_date.data
         jobs.is_finished = form.is_finished.data
         current_user.jobs.append(jobs)
         db_sess.merge(current_user)

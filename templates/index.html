@@ -3,12 +3,23 @@
 {% block content %}
 {% if current_user.is_authenticated %}
 <div style="box-shadow: 0 0 10px rgba(0,0,0,0.5); padding: 10px">
-    <h1>Список работ</h1>
-    {% if not job %}
-    <a href="/jobs" class="btn btn-secondary">Добавить работу</a>
-    {% else %}
-    <p>{{ job }}</p>
-    {% endif %}
+    <h1>Action list</h1>
+    {% for job in jobs %}
+    <div style="background:lavender">
+        <h2>Action #{{ loop.index }}</h2>
+        <p>team leader: {{ team_leaders[loop.index0] }}</p>
+        <p>action: {{ job.job }}</p>
+        <p>work size: {{ job.work_size }}</p>
+        <p>list of collaborators: {{ job.collaborators }}</p>
+        {% if job.is_finished %}
+        <p>The action is finished</p>
+        {% else %}
+        <p style="font-weight:700">The action is not finished</p>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
+<br>
+<a href="/jobs" class="btn btn-secondary">Add action</a>
 {% endif %}
 {% endblock %}
