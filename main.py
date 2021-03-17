@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, abort
 from forms.user import RegisterForm
 from forms.login import LoginForm
 from forms.job import JobsForm
-from data import db_session
+from data import db_session, jobs_api
 from data.users import User
 from data.jobs import Jobs
 
@@ -15,6 +15,7 @@ login_manager.init_app(app)
 
 def main():
     db_session.global_init(f"db/mars_db.sqlite")
+    app.register_blueprint(jobs_api.blueprint)
     app.run()
 
 
