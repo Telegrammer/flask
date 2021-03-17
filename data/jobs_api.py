@@ -25,7 +25,7 @@ def get_news():
     )
 
 
-@blueprint.route('/api/jobs/<int:news_id>', methods=['GET'])
+@blueprint.route('/api/jobs/<int:jobs_id>', methods=['GET'])
 def get_one_news(jobs_id):
     db_sess = db_session.create_session()
     news = db_sess.query(Jobs).get(jobs_id)
