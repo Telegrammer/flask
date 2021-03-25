@@ -44,13 +44,14 @@ def create_jobs():
     if not request.json:
         return jsonify({'error': 'Empty request'})
     elif not all(key in request.json for key in
-                 ['team_leader', 'job', 'work_size', 'collaborators', 'is_finished']):
+                 ['team_leader', 'job', 'work_size', 'collaborators', 'is_finished', 'id']):
         return jsonify({'error': 'Bad request'})
 
     db_sess = db_session.create_session()
     if db_sess.query(Jobs).filter(Jobs.id == request.json['id']).all():
         return jsonify({'error': 'id already exists'})
     jobs = Jobs(
+        id=request.json['id'],
         team_leader=request.json['team_leader'],
         job=request.json['job'],
         work_size=request.json['work_size'],
@@ -80,18 +81,34 @@ def edit_jobs(jobs_id):
     db_sess = db_session.create_session()
     if not request.json:
         return jsonify({'error': 'Empty request'})
-    elif not all(key in request.json for key in
-                 ['team_leader', 'job', 'work_size', 'collaborators', 'is_finished']):
-        return jsonify({'error': 'Bad request'})
+    elif 'id' in request.json.keys():
+        return jsonify({'error': 'You cant change id'})
 
     jobs = db_sess.query(Jobs).get(jobs_id)
     if not jobs:
         return jsonify({'error': 'No found'})
-    jobs.team_leader = request.json['team_leader']
-    jobs.job = request.json['job']
-    jobs.work_size = request.json['work_size']
-    jobs.collaborators = request.json['collaborators']
-    jobs.is_finished = request.json['is_finished']
+
+    try:
+        jobs.team_leader = request.json['team_leader']
+    except KeyError:
+        pass
+    try:
+        jobs.job = request.json['job']
+    except KeyError:
+        pass
+    try:
+        jobs.work_size = request.json['work_size']
+    except KeyError:
+        pass
+    try:
+        jobs.collaborators = request.json['collaborators']
+    except KeyError:
+        pass
+    try:
+        jobs.is_finished = request.json['is_finished']
+    except KeyError:
+        pass
+
     db_sess.commit()
     db_sess.close()
     return jsonify({'success': 'OK'})
